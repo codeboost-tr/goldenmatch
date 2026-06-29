@@ -6,6 +6,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follo
 
 ## [Unreleased]
 
+### Changed
+- **Auto-config: per-identifier blocking union on null-sparse multi-source data (#1207, PR1).**
+  When no single exact key clears the null-rate gate, `build_blocking` now emits a
+  per-identifier blocking union (one pass per strong identifier + name/geo) instead of a
+  single high-null compound that capped recall. Default-on; no behavior change when a
+  low-null single exact key exists. Strong-id passes use a non-null scale gate (the runtime
+  blocker filters null block keys) with a #876 perfect-surrogate exclusion. Measured blocking
+  recall 1.0 vs name-only 0.004 on a planted-dup fixture, no regression on the auto-config suite.
+
 ## [2.4.0] - 2026-06-27
 
 <!-- README-callout
